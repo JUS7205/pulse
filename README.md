@@ -113,6 +113,19 @@ The small FFI is copied locally (no dependency on the sibling `sentinel` crate).
 cargo test        # 17 unit tests (snapshot / watch / verdict) + 3 CLI integration tests
 ```
 
+## Architecture
+
+```mermaid
+flowchart LR
+  B[baseline snapshot] --> D[diff]
+  N[new snapshot] --> D
+  D --> W[watch]
+  W --> V{verdict}
+  V -->|external conn| ALERT[ALERT]
+  V -->|new child / orphan| WARN[WARN]
+  V -->|else| OK[OK]
+```
+
 ## License
 
 MIT

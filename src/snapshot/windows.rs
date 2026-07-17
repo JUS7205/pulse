@@ -8,6 +8,10 @@ use crate::snapshot::{Connection, ProcessInfo};
 use std::net::Ipv4Addr;
 
 use windows_sys::Win32::Foundation::{CloseHandle, INVALID_HANDLE_VALUE};
+use windows_sys::Win32::NetworkManagement::IpHelper::{
+    GetExtendedTcpTable, MIB_TCPROW_OWNER_PID, MIB_TCPTABLE_OWNER_PID, TCP_TABLE_OWNER_PID_ALL,
+};
+use windows_sys::Win32::Networking::WinSock::AF_INET;
 use windows_sys::Win32::System::Diagnostics::ToolHelp::{
     CreateToolhelp32Snapshot, Process32First, Process32Next, PROCESSENTRY32, TH32CS_SNAPPROCESS,
 };
@@ -15,10 +19,6 @@ use windows_sys::Win32::System::ProcessStatus::K32GetModuleBaseNameA;
 use windows_sys::Win32::System::Threading::{
     OpenProcess, PROCESS_QUERY_INFORMATION, PROCESS_VM_READ,
 };
-use windows_sys::Win32::NetworkManagement::IpHelper::{
-    GetExtendedTcpTable, MIB_TCPROW_OWNER_PID, MIB_TCPTABLE_OWNER_PID, TCP_TABLE_OWNER_PID_ALL,
-};
-use windows_sys::Win32::Networking::WinSock::AF_INET;
 
 /// Enumerate the host process tree via the Toolhelp snapshot API.
 pub(super) fn processes() -> Vec<ProcessInfo> {

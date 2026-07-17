@@ -32,18 +32,10 @@ impl Verdict {
 }
 
 /// Configuration that tunes the verdict.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct Config {
     /// PIDs whose newly-spawned children warrant a WARN.
     pub watched_pids: Vec<u32>,
-}
-
-impl Default for Config {
-    fn default() -> Self {
-        Config {
-            watched_pids: Vec::new(),
-        }
-    }
 }
 
 /// Classify `diff` against `baseline` using `config`.
@@ -53,7 +45,11 @@ impl Default for Config {
 /// PID?"). `baseline` feeds orphan detection (already computed in the diff).
 pub fn classify(diff: &Diff, baseline: &Snapshot, current: &Snapshot, config: &Config) -> Verdict {
     // ALERT: any new external connection to a public (non-private) address.
-    if diff.new_external_connections.iter().any(|c| is_public(&c.remote_addr)) {
+    if diff
+        .new_external_connections
+        .iter()
+        .any(|c| is_public(&c.remote_addr))
+    {
         return Verdict::Alert;
     }
 
@@ -108,7 +104,12 @@ mod tests {
     #[test]
     fn public_external_is_alert() {
         let d = diff_with_external(&[c(1, "8.8.8.8:443")]);
-        let v = classify(&d, &Snapshot::default(), &Snapshot::default(), &Config::default());
+        let v = classify(
+            &d,
+            &Snapshot::default(),
+            &Snapshot::default(),
+            &Config::default(),
+        );
         assert_eq!(v, Verdict::Alert);
     }
 
@@ -117,7 +118,12 @@ mod tests {
         // An external (off-host) but RFC1918 connection is not public, so no
         // ALERT by itself. With nothing else it is OK.
         let d = diff_with_external(&[c(1, "10.0.0.5:80")]);
-        let v = classify(&d, &Snapshot::default(), &Snapshot::default(), &Config::default());
+        let v = classify(
+            &d,
+            &Snapshot::default(),
+            &Snapshot::default(),
+            &Config::default(),
+        );
         assert_eq!(v, Verdict::Ok);
     }
 
@@ -151,7 +157,12 @@ mod tests {
                 name: "child".to_string(),
             }],
         };
-        let v = classify(&d, &Snapshot::default(), &Snapshot::default(), &Config::default());
+        let v = classify(
+            &d,
+            &Snapshot::default(),
+            &Snapshot::default(),
+            &Config::default(),
+        );
         assert_eq!(v, Verdict::Warn);
     }
 
@@ -162,7 +173,12 @@ mod tests {
             new_external_connections: vec![],
             orphaned_parents: vec![],
         };
-        let v = classify(&d, &Snapshot::default(), &Snapshot::default(), &Config::default());
+        let v = classify(
+            &d,
+            &Snapshot::default(),
+            &Snapshot::default(),
+            &Config::default(),
+        );
         assert_eq!(v, Verdict::Ok);
     }
 

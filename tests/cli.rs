@@ -39,7 +39,9 @@ fn cli_diff_integration() {
     assert_eq!(v["new_processes"][0]["pid"].as_u64().unwrap(), 31337);
     assert_eq!(v["new_external_connections"].as_array().unwrap().len(), 1);
     assert_eq!(
-        v["new_external_connections"][0]["remote_addr"].as_str().unwrap(),
+        v["new_external_connections"][0]["remote_addr"]
+            .as_str()
+            .unwrap(),
         "203.0.113.66:443"
     );
 }
@@ -58,7 +60,11 @@ fn cli_verdict_alert_integration() {
         .expect("failed to spawn pulse");
 
     // A public external connection => ALERT, which exits with code 1.
-    assert_eq!(out.status.code(), Some(1), "public C2 conn should be ALERT (exit 1)");
+    assert_eq!(
+        out.status.code(),
+        Some(1),
+        "public C2 conn should be ALERT (exit 1)"
+    );
     let stdout = String::from_utf8(out.stdout).expect("stdout utf8");
     let v: serde_json::Value =
         serde_json::from_str(&stdout).expect("verdict output must be valid JSON");

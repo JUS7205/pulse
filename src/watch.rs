@@ -4,7 +4,7 @@
 //! interesting deltas a tripwire cares about:
 //!   * `new_processes`         — processes present now but not at baseline,
 //!   * `new_external_connections` — external (off-host) connections that have
-//!                                 appeared since baseline,
+//!     appeared since baseline,
 //!   * `orphaned_parents`      — processes whose parent changed / disappeared.
 
 use crate::snapshot::{is_external, Connection, ProcessInfo, Snapshot};
@@ -61,9 +61,7 @@ pub fn diff(baseline: &Snapshot, current: &Snapshot) -> Diff {
     let new_external_connections = current
         .connections
         .iter()
-        .filter(|c| {
-            is_external(&c.remote_addr) && !base_conn_set.contains(c)
-        })
+        .filter(|c| is_external(&c.remote_addr) && !base_conn_set.contains(c))
         .cloned()
         .collect();
 
@@ -169,7 +167,11 @@ mod tests {
 
     #[test]
     fn new_external_connection_detected() {
-        let base = snap(1, &[p(1, 0, "init")], &[c(1, "127.0.0.1:5000", "127.0.0.1:5001", "ESTABLISHED")]);
+        let base = snap(
+            1,
+            &[p(1, 0, "init")],
+            &[c(1, "127.0.0.1:5000", "127.0.0.1:5001", "ESTABLISHED")],
+        );
         let cur = snap(
             2,
             &[p(1, 0, "init")],
@@ -210,7 +212,11 @@ mod tests {
     #[test]
     fn orphaned_parent_reparent_detected() {
         // PID 3 exists in both snapshots but its parent changed 2 -> 4.
-        let base = snap(1, &[p(1, 0, "init"), p(2, 1, "shell"), p(3, 2, "child")], &[]);
+        let base = snap(
+            1,
+            &[p(1, 0, "init"), p(2, 1, "shell"), p(3, 2, "child")],
+            &[],
+        );
         let cur = snap(
             2,
             &[p(1, 0, "init"), p(4, 1, "shell2"), p(3, 4, "child")],

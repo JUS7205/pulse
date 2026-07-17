@@ -132,8 +132,7 @@ mod tests {
     #[test]
     fn sample_snapshot_deserializes() {
         let json = include_str!("../../examples/sample.snapshot.json");
-        let s: Snapshot =
-            serde_json::from_str(json).expect("sample snapshot must parse as JSON");
+        let s: Snapshot = serde_json::from_str(json).expect("sample snapshot must parse as JSON");
         assert!(s.timestamp > 0, "timestamp should be non-zero");
         assert!(!s.processes.is_empty(), "sample must contain processes");
         assert!(

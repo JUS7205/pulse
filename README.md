@@ -1,5 +1,7 @@
 # pulse
 
+[![CI](https://github.com/JUS7205/pulse/actions/workflows/ci.yml/badge.svg)](https://github.com/JUS7205/pulse/actions/workflows/ci.yml)
+
 A blue-team host telemetry tripwire. `pulse` captures a point-in-time snapshot of
 a host's **process tree** and **IPv4 TCP connection table**, then diffs a later
 snapshot against a baseline to surface drift:

@@ -68,7 +68,9 @@ fn cmd_diff(a_path: &str, b_path: &str) {
 
 fn cmd_verdict(args: &[String]) {
     if args.len() < 2 {
-        eprintln!("error: `pulse verdict` expects <baseline.json> <current.json> [--watch PID ...]");
+        eprintln!(
+            "error: `pulse verdict` expects <baseline.json> <current.json> [--watch PID ...]"
+        );
         print_usage();
         exit(2);
     }
@@ -138,11 +140,10 @@ struct VerdictReport<'a> {
 }
 
 fn load_snapshot(path: &str) -> Snapshot {
-    let text = std::fs::read_to_string(Path::new(path))
-        .unwrap_or_else(|e| {
-            eprintln!("error: cannot read `{}`: {}", path, e);
-            exit(2);
-        });
+    let text = std::fs::read_to_string(Path::new(path)).unwrap_or_else(|e| {
+        eprintln!("error: cannot read `{}`: {}", path, e);
+        exit(2);
+    });
     serde_json::from_str(&text).unwrap_or_else(|e| {
         eprintln!("error: `{}` is not a valid snapshot JSON: {}", path, e);
         exit(2);

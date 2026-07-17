@@ -128,4 +128,7 @@ flowchart LR
 
 ## License
 
-MIT
+Apache-2.0 + Commons Clause. Commercial rights reserved to the copyright
+owner — you may use/modify/host it freely for non-commercial purposes and as a
+capability showcase, but may not sell it or a product derived from it without a
+commercial license (see LICENSE).

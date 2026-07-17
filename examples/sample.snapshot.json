@@ -1,0 +1,15 @@
+{
+  "timestamp": 1752777600,
+  "processes": [
+    { "pid": 1, "parent_pid": 0, "name": "System Idle Process" },
+    { "pid": 4, "parent_pid": 0, "name": "System" },
+    { "pid": 272, "parent_pid": 4, "name": "services.exe" },
+    { "pid": 880, "parent_pid": 272, "name": "svchost.exe" },
+    { "pid": 1504, "parent_pid": 880, "name": "pulse.exe" }
+  ],
+  "connections": [
+    { "pid": 880, "local_addr": "127.0.0.1:5354", "remote_addr": "127.0.0.1:5355", "state": "ESTABLISHED" },
+    { "pid": 1504, "local_addr": "192.168.1.20:49152", "remote_addr": "10.0.0.5:8080", "state": "ESTABLISHED" },
+    { "pid": 4, "local_addr": "0.0.0.0:0", "remote_addr": "0.0.0.0:0", "state": "LISTEN" }
+  ]
+}
